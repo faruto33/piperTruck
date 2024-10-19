@@ -1,0 +1,106 @@
+nelmio_api_doc:
+  documentation:
+    servers:
+      - url : /
+    paths:
+      '/':
+        get:
+          tags:
+            - Liste des Réservations
+          summary: 'Liste des réservations par jour'
+          description: 'Liste des réservations par jour'
+          operationId: getAllReservations
+          parameters:
+            - name: dateStart
+              in: query
+              description: 'Starting date au format YYYY-MM-DD'
+              required: false
+              schema:
+                type: string
+            - name: dateEnd
+              in: query
+              description: 'Ending date au format YYYY-MM-DD'
+              required: false
+              schema:
+                type: string
+          responses:
+            '200':
+              description: 'Recupération de la liste des réservations par jour'
+            '400':
+              description: 'Format date non respecté'
+      '/add/{date}/{placement}/{foodtruck}':
+        get:
+          tags:
+            - Ajout d'une réservation
+          summary: 'Ajouter une nouvelle réservation'
+          description: 'Ajouter une nouvelle réservation'
+          operationId: addReservation
+          parameters:
+            - name: date
+              in: path
+              description: 'date au format YYYY-MM-DD'
+              required: true
+              schema:
+                type: string
+            - name: placement
+              in: path
+              description: 'numéro emplacement'
+              required: false
+              schema:
+                type: string
+            - name: foodtruck
+              in: path
+              description: 'foodtruck'
+              required: false
+              schema:
+                type: string
+          responses:
+            '200':
+              description: 'Product'
+            '400':
+              description: 'Bad request'
+      '/delete/{id}':
+        delete:
+          tags:
+            - Suppression d'une réservation
+          summary: 'Delete a reservation'
+          description: 'Delete a unique reservation'
+          operationId: delete
+          parameters:
+            -
+              name: id
+              in: path
+              description: 'Unique Id'
+              required: true
+              schema:
+                type: integer
+          responses:
+            '200':
+              description: 'Réservation supprimé'
+    components:
+      schemas:
+        Product:
+          title: 'Product Schema'
+          properties:
+            id:
+              type: int
+            code:
+              type: string
+            name:
+              type: string
+            description:
+              type: string
+            Image:
+              type: string
+            category:
+              type: string
+            price:
+              type: float
+            Inventory:
+              type: string
+            Rating:
+              type: int
+      type: object
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

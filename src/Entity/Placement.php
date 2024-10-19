@@ -6,6 +6,7 @@ use App\Repository\PlacementRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PlacementRepository::class)]
 class Placement
@@ -13,15 +14,17 @@ class Placement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation.add','reservation.delete'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['reservation.add','reservation.delete'])]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'placement_id', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'placement', orphanRemoval: true)]
     private Collection $reservations;
 
     public function __construct()
@@ -65,7 +68,7 @@ class Placement
     {
         if (!$this->reservations->contains($reservation)) {
             $this->reservations->add($reservation);
-            $reservation->setPlacementId($this);
+            $reservation->setPlacement($this);
         }
 
         return $this;
@@ -75,8 +78,8 @@ class Placement
     {
         if ($this->reservations->removeElement($reservation)) {
             // set the owning side to null (unless already changed)
-            if ($reservation->getPlacementId() === $this) {
-                $reservation->setPlacementId(null);
+            if ($reservation->getPlacement() === $this) {
+                $reservation->setPlacement(null);
             }
         }
 

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -14,18 +15,22 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['reservation.add'])]
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
+    #[Groups(['reservation.add','reservation.delete'])]
     private ?\DateTimeImmutable $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(inversedBy: 'reservations', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Foodtruck $foodtruck_id = null;
+    #[Groups(['reservation.add','reservation.delete'])]
+    private ?Foodtruck $foodtruck = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(inversedBy: 'reservations', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Placement $placement_id = null;
+    #[Groups(['reservation.add','reservation.delete'])]
+    private ?Placement $placement = null;
 
     public function getId(): ?int
     {
@@ -51,26 +56,26 @@ class Reservation
         return $this;
     }
 
-    public function getFoodtruckId(): ?Foodtruck
+    public function getFoodtruck(): ?Foodtruck
     {
-        return $this->foodtruck_id;
+        return $this->foodtruck;
     }
 
-    public function setFoodtruckId(?Foodtruck $foodtruck_id): static
+    public function setFoodtruck(?Foodtruck $foodtruck): static
     {
-        $this->foodtruck_id = $foodtruck_id;
+        $this->foodtruck = $foodtruck;
 
         return $this;
     }
 
-    public function getPlacementId(): ?Placement
+    public function getPlacement(): ?Placement
     {
-        return $this->placement_id;
+        return $this->placement;
     }
 
-    public function setPlacementId(?Placement $placement_id): static
+    public function setPlacement(?Placement $placement): static
     {
-        $this->placement_id = $placement_id;
+        $this->placement = $placement;
 
         return $this;
     }

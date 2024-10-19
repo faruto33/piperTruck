@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Reservation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use DateTime;
 
 /**
  * @extends ServiceEntityRepository<Reservation>
@@ -16,28 +17,27 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    //    /**
-    //     * @return Reservation[] Returns an array of Reservation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    // redefined find all order by date ASC
+    public function findAllByDate(DateTime $dateStart,DateTime $dateEnd):array
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.date >= :dateStart')->setParameter('dateStart', $dateStart)
+           // ->andWhere('r.date <= :dateEnd')
+            ->orderBy('r.date', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?Reservation
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    // format a new array where reservations group by date
+   public function groupByDay(array $reservations): array
+   {
+       $groupedReservations = [];
+       foreach ($reservations as $reservation) {
+           $groupedReservations[$reservation->getDate()->format('Y-m-d')] = [
+               'foodtruck' => $reservation->getFoodtruck()->getId(),
+               'placement' => $reservation->getPlacement()->getDescription()];
+       }
+       return $groupedReservations;
+   }
 }
