@@ -7,9 +7,28 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[UniqueEntity(
+    fields: ['date','foodtruck','placement'],
+    message: 'This foodtruck has already been placed for this day',
+    groups: ['reservation.add']
+)]
+#[UniqueEntity(
+    fields: ['date','placement'],
+    message: 'This placement has already been reserved for this day',
+    groups: ['reservation.add']
+)]
+#[UniqueEntity(
+    fields: ['date'],
+    message: 'Quota exceeded for this day',
+    repositoryMethod: "quota",
+    groups: ['reservation.add']
+)]
 class Reservation
 {
     #[ORM\Id]

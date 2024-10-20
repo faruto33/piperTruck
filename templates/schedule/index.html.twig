@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Scheduler for piper truck reservation{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <table class="table table-primary">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>FoodTruck</th>
+                            <th>Emplacement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for date,c in content %}
+                        <tr>
+                            <td>{{ date }}</td>
+                            <td>{{ c.foodtruck }}</td>
+                            <td>{{ c.placement }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -28,32 +28,20 @@ nelmio_api_doc:
               description: 'Recupération de la liste des réservations par jour'
             '400':
               description: 'Format date non respecté'
-      '/add/{date}/{placement}/{foodtruck}':
-        get:
+      '/add':
+        post:
           tags:
             - Ajout d'une réservation
           summary: 'Ajouter une nouvelle réservation'
           description: 'Ajouter une nouvelle réservation'
-          operationId: addReservation
-          parameters:
-            - name: date
-              in: path
-              description: 'date au format YYYY-MM-DD'
-              required: true
-              schema:
-                type: string
-            - name: placement
-              in: path
-              description: 'numéro emplacement'
-              required: false
-              schema:
-                type: string
-            - name: foodtruck
-              in: path
-              description: 'foodtruck'
-              required: false
-              schema:
-                type: string
+          operationId: add
+          requestBody:
+            description: A JSON object containing pet information
+            content:
+              application/json:
+                schema:
+                  oneOf:
+                    - $ref: "#/components/schemas/Reservation"
           responses:
             '200':
               description: 'Product'
@@ -79,28 +67,27 @@ nelmio_api_doc:
               description: 'Réservation supprimé'
     components:
       schemas:
-        Product:
-          title: 'Product Schema'
+        Reservation:
+          title: 'Réservation'
+          properties:
+            date:
+              type: date
+            foodtruck:
+              $ref: "#/components/schemas/Foodtruck"
+            placement:
+              $ref: "#/components/schemas/Placement"
+        Foodtruck:
+          title: 'Foodtruck'
+          properties:
+            id:
+              type: string
+        Placement:
+          title: 'Placement'
           properties:
             id:
               type: int
-            code:
-              type: string
-            name:
-              type: string
-            description:
-              type: string
-            Image:
-              type: string
-            category:
-              type: string
-            price:
-              type: float
-            Inventory:
-              type: string
-            Rating:
-              type: int
       type: object
+
   areas: # to filter documented areas
     path_patterns:
       - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
