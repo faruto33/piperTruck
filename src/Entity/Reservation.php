@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 #[UniqueEntity(
-    fields: ['date','foodtruck','placement'],
+    fields: ['date','foodtruck'],
     message: 'This foodtruck has already been placed for this day',
     groups: ['reservation.add']
 )]

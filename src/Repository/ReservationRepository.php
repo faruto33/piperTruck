@@ -38,29 +38,32 @@ class ReservationRepository extends ServiceEntityRepository
    // format a new array where reservations group by date
    public function groupByDay(array $reservations): array
    {
+       $cnt = $this->countPlacement();
+
+
        $groupedReservations = [];
-       foreach ($reservations as $reservation) {
-           $groupedReservations[$reservation->getDate()->format('Y-m-d')][] = [
+       foreach ($reservations as $reservation)
+       {
+           if(!isset($groupedReservations[$reservation->getDate()->format('Y-m-d')]))
+               $groupedReservations[$reservation->getDate()->format('Y-m-d')]=array_fill(1,$cnt,[]);
+           $groupedReservations[$reservation->getDate()->format('Y-m-d')][$reservation->getPlacement()->getId()] = [
                'foodtruck' => $reservation->getFoodtruck()->getId(),
-               'placement' => [
-                   'id'=> $reservation->getPlacement()->getId(),
-                   'description' => $reservation->getPlacement()->getDescription()]
+               'placement' => $reservation->getPlacement()->getDescription()
            ];
        }
+
+       dd($groupedReservations);
        return $groupedReservations;
    }
 
-    // check if a registration already been passed and max reservations rules
-    public function checkReservation(array $values): array
+    // count all occupied placement
+    private function countPlacement():int
     {
-        // check if reservation already exists
-        $res = $this->createQueryBuilder('r')
-            ->andWhere('r.date = :date')->setParameter('date', $values['date']->format("Y-m-d"))
-            ->andWhere('r.foodtruck = :foodtruck')->setParameter('foodtruck', $values['foodtruck']->getId())
-            ->andWhere('r.placement = :placement')->setParameter('placement', $values['placement']->getId())
+        // get all reservations this specific day
+        return $this->createQueryBuilder('r')
+            ->select('count(distinct(r.placement))')
             ->getQuery()
-            ->getResult();
-        return $res;
+            ->getSingleScalarResult();
     }
 
     // quota exceeded

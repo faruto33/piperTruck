@@ -48,8 +48,9 @@ class ReservationController extends AbstractController
         $dateEnd = DateTime::createFromFormat('Y-m-d', $dateEnd);
         // get all reservations by date
         $reservations = $reservationRepository->findAllByDate($dateStart, $dateEnd);
+
         // format reservations per day and return result
-        return $this->json($reservationRepository->groupByDay($reservations));
+        return $this->json($reservationRepository->groupByDay($reservations,));
     }
 
     #[Route('/add', name: 'reservation.add', methods: ['POST'])]

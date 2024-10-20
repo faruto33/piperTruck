@@ -3,25 +3,43 @@
 {% block title %}Scheduler for piper truck reservation{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <table class="table table-primary">
+    <div class="container text-center">
+        <div class="row align-items-start">
+            <div class="col-2 mt-5">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-success-subtle">
+                        Foodtrucks partenaire
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for f in foodtrucks %}
+                            <li class="list-group-item m-0 p-0 text-start fw-light">{{ f.id() }}</th></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-10 mt-5">
+                <table class="table table-light table-striped table-sm table-hover table-bordered shadow-lg">
                     <thead>
+                        <tr class="bg-primary-subtle">
+                           <th colspan="{{ count + 1 }}" class="bg-primary-subtle">Liste des réservations</th>
+                        </tr>
                         <tr>
-                            <th>Date</th>
+                            <th class="fw-normal">Date</th>
                         {% for p in placements %}
-                            <th>{{ p.getId() }}</th>
+                            <th class="fw-normal">{{ p.getId() }}. {{ p.getDescription() }}</th>
                         {% endfor %}
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table-group-divider">
                     {% for date,c in contents %}
                         <tr>
-                        <td>{{ date }}</td>
-                            {% for date,c in c %}
-                                <th>{{ p.getId() }}</th>
-                            {% endfor %}
+                            <td>{{ date|date("l d") }}</td>
+                        {% for p in c %}
+                            <td class="fw-light">{{ p.foodtruck }}</td>
+                        {% endfor %}
                         </tr>
                     {% endfor %}
                     </tbody>

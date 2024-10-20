@@ -30,11 +30,12 @@ class ScheduleController extends AbstractController
 
         // $contentType = 'application/json'
         $contents = json_decode($response->getContent(),true);
-dd($contents);
+
         return $this->render('schedule/index.html.twig', [
             'contents' => $contents,
             'placements' => $placements,
             'foodtrucks' => $foodtrucks,
+            'count' => count($placements),
         ]);
     }
 }
