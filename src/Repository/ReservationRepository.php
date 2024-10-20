@@ -52,7 +52,6 @@ class ReservationRepository extends ServiceEntityRepository
            ];
        }
 
-       dd($groupedReservations);
        return $groupedReservations;
    }
 
