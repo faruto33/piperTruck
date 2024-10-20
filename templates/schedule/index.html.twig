@@ -10,16 +10,18 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>FoodTruck</th>
-                            <th>Emplacement</th>
+                        {% for p in placements %}
+                            <th>{{ p.getId() }}</th>
+                        {% endfor %}
                         </tr>
                     </thead>
                     <tbody>
-                    {% for date,c in content %}
+                    {% for date,c in contents %}
                         <tr>
-                            <td>{{ date }}</td>
-                            <td>{{ c.foodtruck }}</td>
-                            <td>{{ c.placement }}</td>
+                        <td>{{ date }}</td>
+                            {% for date,c in c %}
+                                <th>{{ p.getId() }}</th>
+                            {% endfor %}
                         </tr>
                     {% endfor %}
                     </tbody>

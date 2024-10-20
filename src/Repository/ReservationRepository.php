@@ -30,7 +30,7 @@ class ReservationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('r')
             ->andWhere('r.date >= :dateStart')->setParameter('dateStart', $dateStart->format("Y-m-d"))
             ->andWhere('r.date <= :dateEnd')->setParameter('dateEnd', $dateEnd->format("Y-m-d"))
-            ->orderBy('r.date', 'ASC')
+            ->orderBy('r.date,r.placement', 'ASC')
             ->getQuery()
             ->getResult();
     }
