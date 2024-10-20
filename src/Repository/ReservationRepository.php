@@ -45,11 +45,8 @@ class ReservationRepository extends ServiceEntityRepository
        foreach ($reservations as $reservation)
        {
            if(!isset($groupedReservations[$reservation->getDate()->format('Y-m-d')]))
-               $groupedReservations[$reservation->getDate()->format('Y-m-d')]=array_fill(1,$cnt,[]);
-           $groupedReservations[$reservation->getDate()->format('Y-m-d')][$reservation->getPlacement()->getId()] = [
-               'foodtruck' => $reservation->getFoodtruck()->getId(),
-               'placement' => $reservation->getPlacement()->getDescription()
-           ];
+               $groupedReservations[$reservation->getDate()->format('Y-m-d')]=array_fill(1,$cnt,'');
+           $groupedReservations[$reservation->getDate()->format('Y-m-d')][$reservation->getPlacement()->getId()] = $reservation->getFoodtruck()->getId();
        }
 
        return $groupedReservations;
