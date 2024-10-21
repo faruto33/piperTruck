@@ -27,7 +27,7 @@ nelmio_api_doc:
             '200':
               description: 'Recupération de la liste des réservations par jour'
             '400':
-              description: 'Format date non respecté'
+              description: 'Mauvais paramètres'
       '/add':
         post:
           tags:
@@ -44,9 +44,9 @@ nelmio_api_doc:
                     - $ref: "#/components/schemas/Reservation"
           responses:
             '200':
-              description: 'Product'
+              description: 'Reservation ajouté au format JSON'
             '400':
-              description: 'Bad request'
+              description: 'Mauvais paramètres'
       '/delete/{id}':
         delete:
           tags:
@@ -64,7 +64,7 @@ nelmio_api_doc:
                 type: integer
           responses:
             '200':
-              description: 'Réservation supprimé'
+              description: 'Reservation supprimé au format JSON'
     components:
       schemas:
         Reservation:
