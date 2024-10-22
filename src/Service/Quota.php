@@ -22,7 +22,7 @@ Class Quota{
             ->getQuery()
             ->getSingleScalarResult();
         // test if reservation respect the daily quota
-        return $res<=$this->quotas[$reservation->getDate()->format("l")];
+        return $res<$this->quotas[$reservation->getDate()->format("l")];
     }
 
     // return number of available placement
