@@ -12,21 +12,17 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-#[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[\Attribute] #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+// Unique foodtruck per day
 #[UniqueEntity(
     fields: ['date','foodtruck'],
     message: 'This foodtruck has already been placed for this day',
     groups: ['reservation.add']
 )]
+// Unique placement per day
 #[UniqueEntity(
     fields: ['date','placement'],
     message: 'This placement has already been reserved for this day',
-    groups: ['reservation.add']
-)]
-#[UniqueEntity(
-    fields: ['date'],
-    message: 'Quota exceeded for this day',
-    repositoryMethod: "quota",
     groups: ['reservation.add']
 )]
 class Reservation
@@ -39,16 +35,19 @@ class Reservation
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Groups(['reservation.add','reservation.delete'])]
+    //#[Reservation(groups:'reservation.add')]
     private ?\DateTimeImmutable $date = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations', cascade: ['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['reservation.add','reservation.delete'])]
+    #[Assert\NotNull(message:'Foodtruck does not exists',groups: ['reservation.add'])]
     private ?Foodtruck $foodtruck = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations', cascade: ['persist'])]
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['reservation.add','reservation.delete'])]
+    #[Assert\NotNull(message:'Placement does not exists',groups: ['reservation.add'])]
     private ?Placement $placement = null;
 
     public function getId(): ?int

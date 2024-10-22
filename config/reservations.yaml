@@ -1,12 +1,4 @@
-# Max number of allowed reservation per day
-reservation.max_per_day:
-  Monday : 8
-  Tuesday : 8
-  Wednesday : 8
-  Thursday : 8
-  Friday : 7
-  Saturday : 0
-  Sunday : 0
+
 
 url :
   dev : "http://127.0.0.1:8000/"
