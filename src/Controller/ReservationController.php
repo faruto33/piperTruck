@@ -93,7 +93,7 @@ class ReservationController extends AbstractController
     }
 
     #[Route('/delete/{id}', name: 'delete', requirements: ['placement'=>'\d+'],methods:['DELETE'])]
-    public function delete(ReservationRepository $reservationRepository,,int $id): JsonResponse
+    public function delete(ReservationRepository $reservationRepository,int $id): JsonResponse
     {
         // if the reservation exists we delete it
         if($reservation = $reservationRepository->find($id))
