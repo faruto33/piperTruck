@@ -93,18 +93,19 @@ class ReservationController extends AbstractController
         return $this->json($reservation,200,[],['groups'=>['reservation.add']]);
     }
 
+
     #[Route('/delete/{id}', name: 'delete', requirements: ['placement'=>'\d+'],methods:['DELETE'])]
-    public function delete(ReservationRepository $reservationRepository,int $id): JsonResponse
+    public function delete(EntityManagerInterface $entityManager,int $id): JsonResponse
     {
+        $reservation = $entityManager->getRepository(Reservation::class)->find($id);
         // if the reservation exists we delete it
-        if($reservation = $reservationRepository->find($id))
+        if($reservation)
         {
-            // delete a product
-            $reservationRepository->remove($reservation);
-            $reservationRepository->flush();
-            return $this->json($reservation,200,[],['groups'=>['reservation.delete'],]);
+            $entityManager->remove($reservation);
+            $entityManager->flush();
+            return $this->json($reservation,200,[],['groups'=>['reservation.delete']]);
         }
-        // otherwise return unfound error
+        // otherwise return unfounded error
         return $this->json(['Reservation not found'],status:400);
     }
 
