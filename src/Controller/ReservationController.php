@@ -83,7 +83,7 @@ class ReservationController extends AbstractController
         if (!$quota->validate($reservation))$messages[]='Reservation quota excedeed';
 
         // if errors messages display them and return
-        if(count($messages))return $this->json($messages,400,[]);
+        if(count($messages))return $this->json($messages,400);
 
         // persist the reservation
         $entityManager->persist($reservation);
