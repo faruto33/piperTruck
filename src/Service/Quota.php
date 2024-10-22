@@ -9,7 +9,7 @@ use App\Repository\ReservationRepository;
 // define service to validate reservation quota
 Class Quota{
 
-    ## quotas and entity manager auto wiring
+    ## quotas and repository auto wiring
     public function __construct(private readonly ReservationRepository $repository,private readonly array $quotas){}
 
     // Validate the reservation quota
