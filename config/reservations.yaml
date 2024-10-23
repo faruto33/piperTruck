@@ -1,5 +1,0 @@
-
-
-url :
-  dev : "http://127.0.0.1:8000/"
-  prod : "http://pied-piper-env.eba-mv7kxesk.eu-west-3.elasticbeanstalk.com/"
