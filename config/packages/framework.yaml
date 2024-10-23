@@ -1,8 +1,4 @@
-# api parameters
-parameters:
-    env(API_URL): "http://pied-piper-env.eba-mv7kxesk.eu-west-3.elasticbeanstalk.com/"
-    encoded_api_url: '%env(API_URL)%'
-
+# see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
     annotations: false
