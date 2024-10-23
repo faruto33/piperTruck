@@ -5,16 +5,12 @@ namespace App\Controller;
 
 use App\Entity\Foodtruck;
 use App\Entity\Placement;
-use App\Entity\Reservation;
 use App\Service\Quota;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class ScheduleController extends AbstractController
 {
